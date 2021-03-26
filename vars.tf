@@ -1,3 +1,3 @@
 variable "env" {
-  default = "staging"
+  default = "production"
 }
