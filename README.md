@@ -75,3 +75,8 @@ The mapping for each of the 6 AZs will be:
         10.0.176.0/21 - public
         10.0.184.0/21 - spare
 ```
+
+## SSH keys
+SSH keys are stored in our AWS account SSM.
+Follow [these instructions](https://docs.aws.amazon.com/en_us/cloudhsm/classic/userguide/generate_ssh_key.html)
+to connect to those instances.
