@@ -9,7 +9,8 @@ module "main-vpc" {
   private_subnets = ["10.0.0.0/20", "10.0.32.0/20", "10.0.64.0/20", "10.0.96.0/20", "10.0.128.0/20", "10.0.160.0/20"]
   public_subnets  = ["10.0.16.0/21", "10.0.48.0/21", "10.0.80.0/21", "10.0.112.0/21", "10.0.144.0/21", "10.0.176.0/21"]
 
-  enable_nat_gateway = false
+  enable_nat_gateway = true
+  single_nat_gateway = true
   enable_vpn_gateway = false
 
   tags = {
