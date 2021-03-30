@@ -82,9 +82,10 @@ Follow [these instructions](https://docs.aws.amazon.com/en_us/cloudhsm/classic/u
 to connect to those instances.
 
 ## TODO
-- [ ] enable VPC Logs
-- [ ] Route53 record for jumphost
+- [x] enable VPC Logs
 - [ ] assign dynamic port to applications
-- [ ] SSL with LB
 - [ ] use ALB instead of ELB
+- [ ] SSL with LB
 - [ ] deploy our console service instead of the example
+- [ ] cloudwatch setup for container insights
+- [ ] [Nice to have] Route53 record for jumphost
