@@ -80,3 +80,12 @@ The mapping for each of the 6 AZs will be:
 SSH keys are stored in our AWS account SSM.
 Follow [these instructions](https://docs.aws.amazon.com/en_us/cloudhsm/classic/userguide/generate_ssh_key.html)
 to connect to those instances.
+
+## TODO
+- [x] enable VPC Logs
+- [ ] assign dynamic port to applications
+- [ ] use ALB instead of ELB
+- [ ] SSL with LB
+- [ ] deploy our console service instead of the example
+- [ ] cloudwatch setup for container insights
+- [ ] [Nice to have] Route53 record for jumphost
