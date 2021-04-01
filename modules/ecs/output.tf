@@ -1,4 +1,4 @@
 output "elb" {
-  value = aws_elb.myapp_elb.dns_name
+  value = aws_lb.xtages_lb.dns_name
 }
 

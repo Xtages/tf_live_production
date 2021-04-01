@@ -83,8 +83,9 @@ to connect to those instances.
 
 ## TODO
 - [x] enable VPC Logs
-- [ ] assign dynamic port to applications
-- [ ] use ALB instead of ELB
+- [x] use ALB instead of ELB
+- [x] assign dynamic port to applications
+- [ ] setup access logs for ALB
 - [ ] SSL with LB
 - [ ] deploy our console service instead of the example
 - [ ] cloudwatch setup for container insights
