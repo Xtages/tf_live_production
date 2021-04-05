@@ -34,7 +34,7 @@ resource "aws_autoscaling_group" "ecs_xtages_asg" {
 resource "aws_autoscaling_policy" "cpu_asg_policy" {
   name = "CPU-ASG-Policy-Add"
   autoscaling_group_name = aws_autoscaling_group.ecs_xtages_asg.name
-  adjustment_type = "ChangeCapacity"
+  adjustment_type = "ChangeInCapacity"
   scaling_adjustment = "1"
   cooldown = 300
   policy_type = "SimpleScaling"
@@ -60,6 +60,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_above_80p_alarm" {
 }
 
 # Scale down alarm
+
 resource "aws_autoscaling_policy" "cpu_asg_policy_scaledown" {
   name                   = "CPU-ASG-Policy-scaledown"
   autoscaling_group_name = aws_autoscaling_group.ecs_xtages_asg.name
