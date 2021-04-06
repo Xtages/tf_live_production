@@ -87,11 +87,11 @@ to connect to those instances.
 - [x] assign dynamic port to applications
 - [x] SSL with LB
 - [x] Scale cluster based on memory and CPU
+- [ ] Add CloudWatch agent to ECS instances so they can collect memory metrics
 - [ ] Use mixed instances
-- [ ] deploy our console service instead of the example
+- [x] deploy our console service instead of the example
 - [ ] setup access logs for ALB - will work on this later as it requires a S3 bucket
       and in every run the bucket will be populated and to destroy it I will have to manually deleted
-
 - [ ] cloudwatch setup for container insights
 - [ ] [Nice to have] Route53 record for jumphost
 - [ ] [Nice to have] Enable http2 in the target group
