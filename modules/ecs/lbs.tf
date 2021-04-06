@@ -1,4 +1,3 @@
-
 resource "aws_lb" "xtages_console_lb" {
   name = "xtages-console-lb"
   internal = false
@@ -12,4 +11,3 @@ resource "aws_lb" "xtages_console_lb" {
     Environment = var.env
   }
 }
-
