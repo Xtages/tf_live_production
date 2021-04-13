@@ -1,4 +1,4 @@
-resource "aws_security_group" "ecs-sg" {
+resource "aws_security_group" "ecs_sg" {
   vpc_id      = var.vpc_id
   name        = "ecs"
   description = "security group for ecs"
@@ -13,7 +13,7 @@ resource "aws_security_group" "ecs-sg" {
     from_port       = 32768
     to_port         = 65535
     protocol        = "tcp"
-    security_groups = [aws_security_group.myapp_elb_sg.id]
+    security_groups = [aws_security_group.xtages_lb_sg.id]
   }
 
   ingress {
@@ -28,9 +28,9 @@ resource "aws_security_group" "ecs-sg" {
   }
 }
 
-resource "aws_security_group" "myapp_elb_sg" {
+resource "aws_security_group" "xtages_lb_sg" {
   vpc_id      = var.vpc_id
-  name        = "myapp-elb"
+  name        = "xtages-lb-sg"
   description = "security group for ecs"
   egress {
     from_port   = 0
@@ -54,7 +54,7 @@ resource "aws_security_group" "myapp_elb_sg" {
   }
 
   tags = {
-    Name = "myapp-elb"
+    Name = "xtages"
   }
 }
 
