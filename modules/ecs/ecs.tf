@@ -9,7 +9,7 @@ resource "aws_launch_configuration" "ecs_xtages_launchconfig" {
   instance_type        = var.ecs_instance_type
   key_name             = "xtages-${var.env}"
   iam_instance_profile = aws_iam_instance_profile.ecs_ec2_role.id
-  security_groups      = [aws_security_group.ecs-sg.id]
+  security_groups      = [aws_security_group.ecs_sg.id]
   user_data            = "#!/bin/bash\necho 'ECS_CLUSTER=xtages-cluster' > /etc/ecs/ecs.config\nstart ecs"
   lifecycle {
     create_before_destroy = true

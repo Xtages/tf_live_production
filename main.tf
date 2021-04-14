@@ -19,3 +19,15 @@ module "ecs" {
   private_subnet_ids = module.main_vpc.private_subnets
   public_subnet_ids = module.main_vpc.public_subnets
 }
+
+module "db" {
+  source = "./modules/db"
+  env = var.env
+  db_name = "xtages_console"
+  db_user = "xtages_console"
+  vpc_id = module.main_vpc.vpc_id
+  private_subnets = module.main_vpc.private_subnets
+  app = "xtages"
+  storage = 20
+  db_instance_class = "db.t3.micro"
+}
