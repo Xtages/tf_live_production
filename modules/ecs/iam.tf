@@ -47,7 +47,9 @@ resource "aws_iam_role_policy" "ecs_ec2_role_policy" {
               "ecr:GetDownloadUrlForLayer",
               "ecr:BatchGetImage",
               "logs:CreateLogStream",
-              "logs:PutLogEvents"
+              "logs:PutLogEvents",
+              "ssm:GetParameter",
+              "ssm:DescribeParameters"
             ],
             "Resource": "*"
         },
