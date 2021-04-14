@@ -26,3 +26,9 @@ output "private_subnets" {
 output "public_subnets" {
   value = module.main_vpc.public_subnets
 }
+
+# RDS outputs
+
+output "xtages_postgres_address" {
+  value = module.db.db_address
+}

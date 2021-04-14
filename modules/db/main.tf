@@ -5,7 +5,7 @@ module "db" {
   identifier = "xtages-${var.env}"
 
   engine            = "postgres"
-  engine_version    = "13.2-R1"
+  engine_version    = "13.2"
   instance_class    = var.db_instance_class
   storage_encrypted = true
   allocated_storage = var.storage
@@ -21,7 +21,7 @@ module "db" {
 
   vpc_security_group_ids = [aws_security_group.postgres_sg.id]
 
-  maintenance_window = "Sat:00:00-Mon:03:00"
+  maintenance_window = "Sat:00:00-Sat:03:00"
   backup_window      = "03:00-06:00"
   backup_retention_period = 7
 
