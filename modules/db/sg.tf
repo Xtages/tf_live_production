@@ -1,6 +1,6 @@
 resource "aws_security_group" "postgres_sg" {
   vpc_id      = var.vpc_id
-  name        = "${var.app}-db-sg"
+  name        = "${var.app}-${local.environment}-db-sg"
   description = "DB security group for ${var.app}"
   egress {
     from_port   = 0
