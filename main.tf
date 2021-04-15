@@ -27,7 +27,19 @@ module "db" {
   db_user = "xtages_console"
   vpc_id = module.main_vpc.vpc_id
   private_subnets = module.main_vpc.private_subnets
-  app = "xtages"
+  app = "console"
+  storage = 20
+  db_instance_class = "db.t3.micro"
+}
+
+module "db_dev" {
+  source = "./modules/db"
+  env = "development"
+  db_name = "xtages_console"
+  db_user = "xtages_console"
+  vpc_id = module.main_vpc.vpc_id
+  private_subnets = module.main_vpc.private_subnets
+  app = "console"
   storage = 20
   db_instance_class = "db.t3.micro"
 }
