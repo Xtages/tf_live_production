@@ -23,7 +23,7 @@ module "db" {
 
   maintenance_window = "Sat:00:00-Sat:03:00"
   backup_window      = "03:00-06:00"
-  backup_retention_period = 0
+  backup_retention_period = var.retention
 
   # Enhanced Monitoring - see example for details on how to create the role
   # by yourself, in case you don't want to create it automatically

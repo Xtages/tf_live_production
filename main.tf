@@ -29,6 +29,7 @@ module "db" {
   private_subnets = module.main_vpc.private_subnets
   app = "console"
   storage = 20
+  retention = 7
   db_instance_class = "db.t3.micro"
 }
 
@@ -41,5 +42,6 @@ module "db_dev" {
   private_subnets = module.main_vpc.private_subnets
   app = "console"
   storage = 20
+  retention = 0
   db_instance_class = "db.t3.micro"
 }

@@ -13,3 +13,7 @@ variable "private_subnets" {}
 variable "storage" {}
 
 variable "db_instance_class" {}
+
+variable "retention" {
+  description = "Days of retention that we want for the DB"
+}
