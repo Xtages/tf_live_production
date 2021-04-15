@@ -32,3 +32,7 @@ output "public_subnets" {
 output "xtages_postgres_address" {
   value = module.db.db_address
 }
+
+output "xtages_postgres_address_dev" {
+  value = module.db_dev.db_address
+}
