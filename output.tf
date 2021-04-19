@@ -36,3 +36,18 @@ output "xtages_postgres_address" {
 output "xtages_postgres_address_dev" {
   value = module.db_dev.db_address
 }
+
+# Cognito outputs
+
+output "user_pool_id" {
+  value = module.cognito.user_pool_id
+}
+output "user_pool_console_web_client_id" {
+  value = module.cognito.user_pool_console_web_client_id
+}
+
+# SES outputs
+
+output "no_reply_at_xtages_dot_com_arn" {
+  value = module.ses.no_reply_at_xtages_dot_com_arn
+}

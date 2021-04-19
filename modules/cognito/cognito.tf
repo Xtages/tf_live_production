@@ -1,5 +1,5 @@
-resource "aws_cognito_user_pool" "prod_user_pool" {
-  name = "prod-user-pool"
+resource "aws_cognito_user_pool" "user_pool" {
+  name = "${var.env}-user-pool"
 
   account_recovery_setting {
     recovery_mechanism {
@@ -98,10 +98,10 @@ resource "aws_cognito_user_pool" "prod_user_pool" {
   }
 }
 
-resource "aws_cognito_user_pool_client" "prod_user_pool_console_web_client" {
-  name = "console-web-prod"
+resource "aws_cognito_user_pool_client" "user_pool_console_web_client" {
+  name = "console-web-${var.env}"
 
-  user_pool_id = aws_cognito_user_pool.prod_user_pool.id
+  user_pool_id = aws_cognito_user_pool.user_pool.id
 
   allowed_oauth_flows_user_pool_client = false
 
