@@ -48,7 +48,7 @@ resource "aws_iam_role_policy" "ecs_ec2_role_policy" {
               "ecr:BatchGetImage",
               "logs:CreateLogStream",
               "logs:PutLogEvents",
-              "ssm:GetParameter",
+              "ssm:GetParameter*",
               "ssm:DescribeParameters"
             ],
             "Resource": "*"
