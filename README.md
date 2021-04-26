@@ -86,9 +86,10 @@ to connect to those instances.
 - [x] use ALB instead of ELB
 - [x] assign dynamic port to applications
 - [x] SSL with LB
-- [x] Scale cluster based on memory and CPU
+- [x] Scale cluster based on CPU
+- [ ] Scale cluster based on memory
 - [ ] Add CloudWatch agent to ECS instances so they can collect memory metrics
-- [ ] Use mixed instances
+- [x] Use mixed instances
 - [x] deploy our console service instead of the example
 - [ ] setup access logs for ALB - will work on this later as it requires a S3 bucket
       and in every run the bucket will be populated and to destroy it I will have to manually deleted
