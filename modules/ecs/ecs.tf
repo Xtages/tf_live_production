@@ -11,7 +11,7 @@ resource "aws_launch_template" "ecs_xtages_launch_template" {
   iam_instance_profile {
     arn = aws_iam_instance_profile.ecs_ec2_role.arn
   }
-  user_data            = "#!/bin/bash\necho 'ECS_CLUSTER=xtages-cluster' > /etc/ecs/ecs.config\nstart ecs"
+  user_data            = base64encode("#!/bin/bash\necho 'ECS_CLUSTER=xtages-cluster' > /etc/ecs/ecs.config\nstart ecs")
   network_interfaces {
     security_groups = [aws_security_group.ecs_sg.id]
   }
