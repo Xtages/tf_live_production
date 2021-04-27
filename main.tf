@@ -12,6 +12,7 @@ module "jumphost" {
 }
 
 module "ecs" {
+  cluster_name = "xtages-cluster"
   source = "./modules/ecs"
   env = var.env
   aws_region = var.aws_region

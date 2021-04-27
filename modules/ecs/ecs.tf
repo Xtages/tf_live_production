@@ -1,16 +1,20 @@
 # cluster
 resource "aws_ecs_cluster" "xtages_cluster" {
-  name = "xtages-cluster"
+  name = var.cluster_name
 }
 
-resource "aws_launch_configuration" "ecs_xtages_launchconfig" {
-  name_prefix          = "ecs-launchconfig"
-  image_id             = data.aws_ami.latest_ecs.image_id
-  instance_type        = var.ecs_instance_type
+resource "aws_launch_template" "ecs_xtages_launch_template" {
+  name_prefix = "ecs-launchtemplate"
+  image_id = data.aws_ami.latest_ecs.image_id
+  instance_type = var.ecs_instance_type
   key_name             = "xtages-${var.env}"
-  iam_instance_profile = aws_iam_instance_profile.ecs_ec2_role.id
-  security_groups      = [aws_security_group.ecs_sg.id]
-  user_data            = "#!/bin/bash\necho 'ECS_CLUSTER=xtages-cluster' > /etc/ecs/ecs.config\nstart ecs"
+  iam_instance_profile {
+    arn = aws_iam_instance_profile.ecs_ec2_role.arn
+  }
+  user_data            = base64encode("#!/bin/bash\necho 'ECS_CLUSTER=xtages-cluster' > /etc/ecs/ecs.config\nstart ecs")
+  network_interfaces {
+    security_groups = [aws_security_group.ecs_sg.id]
+  }
   lifecycle {
     create_before_destroy = true
   }
@@ -19,9 +23,45 @@ resource "aws_launch_configuration" "ecs_xtages_launchconfig" {
 resource "aws_autoscaling_group" "ecs_xtages_asg" {
   name                 = "ecs-xtages-autoscaling"
   vpc_zone_identifier  = var.private_subnet_ids
-  launch_configuration = aws_launch_configuration.ecs_xtages_launchconfig.name
   min_size             = 1
   max_size             = 10
+
+  mixed_instances_policy {
+
+    instances_distribution {
+      on_demand_base_capacity                  = 0
+      on_demand_percentage_above_base_capacity = 0
+      spot_allocation_strategy                 = "lowest-price"
+      spot_max_price = "0.0464"
+    }
+
+    launch_template {
+      launch_template_specification {
+        launch_template_id = aws_launch_template.ecs_xtages_launch_template.id
+      }
+
+      override {
+        instance_type     = "t2.large"
+        weighted_capacity = "2"
+      }
+
+      override {
+        instance_type     = "t3.large"
+        weighted_capacity = "2"
+      }
+
+      override {
+        instance_type     = "t2.medium"
+        weighted_capacity = "2"
+      }
+
+      override {
+        instance_type     = "t3.medium"
+        weighted_capacity = "2"
+      }
+    }
+  }
+
   tag {
     key                 = "Terraform"
     value               = true
