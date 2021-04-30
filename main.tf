@@ -56,3 +56,7 @@ module "cognito" {
 module "ses" {
   source = "./modules/ses"
 }
+
+module "codebuild" {
+  source = "./modules/codebuild"
+}
