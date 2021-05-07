@@ -3,4 +3,6 @@ version: 0.2
 phases:
   build:
     commands:
+      - git clone -q https://x-access-token:${XTAGES_GITHUB_TOKEN}@github.com/${XTAGES_REPO}.git src && cd src
+      - git reset --hard ${XTAGES_COMMIT}
       - node build
