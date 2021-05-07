@@ -28,15 +28,15 @@ resource "aws_iam_role_policy" "xtages_codebuild_ci_policy" {
       "Effect": "Allow",
       "Action": [
         "s3:GetObject",
-        "logs:CreateLogStream",
         "ecr:BatchGetImage",
         "logs:CreateLogGroup",
+        "logs:CreateLogStream",
         "logs:PutLogEvents"
       ],
       "Resource": [
         "arn:aws:ecr:*:606626603369:repository/xtages-build-images",
-        "arn:aws:logs:*:606626603369:log-group:$${aws:PrincipalTag/organization}_ci_logs:log-stream:*",
-        "arn:aws:logs:*:606626603369:log-group:$${aws:PrincipalTag/organization}_ci_logs",
+        "arn:aws:logs:*:606626603369:log-group:Xtages_ci_logs:log-stream:*",
+        "arn:aws:logs:*:606626603369:log-group:Xtages_ci_logs",
         "arn:aws:s3:::xtages-buildspecs/*"
       ]
     }
@@ -79,20 +79,20 @@ resource "aws_iam_role_policy" "xtages_codebuild_cd_policy" {
         "ecr:InitiateLayerUpload",
         "ecr:PutImage"
       ],
-      "Resource": "arn:aws:ecr:*:606626603369:repository/$${aws:PrincipalTag/organization}"
+      "Resource": "arn:aws:ecr:*:606626603369:repository/Xtages"
     },
     {
       "Effect": "Allow",
       "Action": [
         "s3:GetObject",
-        "logs:CreateLogStream",
         "ecr:BatchGetImage",
+        "logs:CreateLogStream",
         "logs:CreateLogGroup",
         "logs:PutLogEvents"
       ],
       "Resource": [
-        "arn:aws:logs:*:606626603369:log-group:$${aws:PrincipalTag/organization}_cd_logs:log-stream:*",
-        "arn:aws:logs:*:606626603369:log-group:$${aws:PrincipalTag/organization}_cd_logs",
+        "arn:aws:logs:*:606626603369:log-group:Xtages_cd_logs:log-stream:*",
+        "arn:aws:logs:*:606626603369:log-group:Xtages_cd_logs",
         "arn:aws:s3:::xtages-buildspecs/*",
         "arn:aws:ecr:*:606626603369:repository/xtages-build-images"
       ]
