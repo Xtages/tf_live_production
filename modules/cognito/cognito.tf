@@ -119,7 +119,8 @@ resource "aws_cognito_user_pool_client" "user_pool_console_web_client" {
 
   explicit_auth_flows = [
     "ALLOW_REFRESH_TOKEN_AUTH",
-    "ALLOW_USER_SRP_AUTH"
+    "ALLOW_USER_SRP_AUTH",
+    "ALLOW_ADMIN_USER_PASSWORD_AUTH"
   ]
 
   generate_secret = false
@@ -213,6 +214,21 @@ resource "aws_iam_role_policy" "authenticated_user_policy" {
       "Resource": [
         "*"
       ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "codebuild:StartBuild"
+      ],
+      "Resource": [
+        "arn:aws:codebuild:*:606626603369:project/*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "aws:ResourceTag/organization":
+          "$${aws:PrincipalTag/organization}"
+        }
+      }
     }
   ]
 }
