@@ -16,3 +16,27 @@ resource "aws_ecr_repository" "xtages_build_images_node_ci" {
     Environment = var.env
   }
 }
+
+resource "aws_ecr_repository_policy" "codebuild_pull_policy" {
+  repository = aws_ecr_repository.xtages_build_images_node_ci.name
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CodeBuildAccessPrincipal",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "codebuild.amazonaws.com"
+      },
+      "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
+      ]
+    }
+  ]
+}
+EOF
+}
