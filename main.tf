@@ -59,4 +59,5 @@ module "ses" {
 
 module "codebuild" {
   source = "./modules/codebuild"
+  env = var.env
 }
