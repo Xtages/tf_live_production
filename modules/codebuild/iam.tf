@@ -27,16 +27,26 @@ resource "aws_iam_role_policy" "xtages_codebuild_ci_policy" {
     {
       "Effect": "Allow",
       "Action": [
-        "s3:GetObject",
-        "ecr:BatchGetImage",
-        "logs:CreateLogGroup",
         "logs:CreateLogStream",
         "logs:PutLogEvents"
       ],
       "Resource": [
+        "arn:aws:logs:*:606626603369:log-group:*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "aws:ResourceTag/organization": "$${aws:ResourceTag/organization}"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "ecr:BatchGetImage"
+      ],
+      "Resource": [
         "arn:aws:ecr:*:606626603369:repository/xtages-build-images",
-        "arn:aws:logs:*:606626603369:log-group:Xtages_ci_logs:log-stream:*",
-        "arn:aws:logs:*:606626603369:log-group:Xtages_ci_logs",
         "arn:aws:s3:::xtages-buildspecs/*"
       ]
     }
@@ -77,24 +87,29 @@ resource "aws_iam_role_policy" "xtages_codebuild_cd_policy" {
         "ecr:StartImageScan",
         "ecr:PutImageScanningConfiguration",
         "ecr:InitiateLayerUpload",
-        "ecr:PutImage"
+        "ecr:PutImage",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
       ],
-      "Resource": "arn:aws:ecr:*:606626603369:repository/Xtages"
+      "Resource": [
+        "arn:aws:ecr:*:606626603369:repository/*",
+        "arn:aws:logs:*:606626603369:log-group:*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "aws:ResourceTag/organization": "$${aws:ResourceTag/organization}"
+        }
+      }
     },
     {
       "Effect": "Allow",
       "Action": [
         "s3:GetObject",
-        "ecr:BatchGetImage",
-        "logs:CreateLogStream",
-        "logs:CreateLogGroup",
-        "logs:PutLogEvents"
+        "ecr:BatchGetImage"
       ],
       "Resource": [
-        "arn:aws:logs:*:606626603369:log-group:Xtages_cd_logs:log-stream:*",
-        "arn:aws:logs:*:606626603369:log-group:Xtages_cd_logs",
-        "arn:aws:s3:::xtages-buildspecs/*",
-        "arn:aws:ecr:*:606626603369:repository/xtages-build-images"
+        "arn:aws:ecr:*:606626603369:repository/xtages-build-images",
+        "arn:aws:s3:::xtages-buildspecs/*"
       ]
     }
   ]
