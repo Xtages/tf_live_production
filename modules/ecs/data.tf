@@ -12,3 +12,12 @@ data "aws_ami" "latest_ecs" {
     values = ["hvm"]
   }
 }
+
+data "template_file" "ecs_user_data" {
+  template = <<-EOF
+              #!/bin/bash
+              echo 'ECS_CLUSTER=xtages-cluster' > /etc/ecs/ecs.config
+              echo 'ECS_ENABLE_SPOT_INSTANCE_DRAINING=true' >> /etc/ecs/ecs.config
+              start ecs
+              EOF
+}
