@@ -4,14 +4,19 @@ resource "aws_ecs_cluster" "xtages_cluster" {
 }
 
 resource "aws_launch_template" "ecs_xtages_launch_template" {
-  name_prefix = "ecs-launchtemplate"
-  image_id = data.aws_ami.latest_ecs.image_id
+  name_prefix   = "ecs-launchtemplate"
+  image_id      = data.aws_ami.latest_ecs.image_id
   instance_type = var.ecs_instance_type
-  key_name             = "xtages-${var.env}"
+  key_name      = "xtages-${var.env}"
   iam_instance_profile {
     arn = aws_iam_instance_profile.ecs_ec2_role.arn
   }
-  user_data            = base64encode("#!/bin/bash\necho 'ECS_CLUSTER=xtages-cluster' > /etc/ecs/ecs.config\nstart ecs")
+  user_data = <<-EOF
+              #!/bin/bash
+              echo 'ECS_CLUSTER=xtages-cluster' > /etc/ecs/ecs.config
+              echo 'ECS_ENABLE_SPOT_INSTANCE_DRAINING=true' >> /etc/ecs/ecs.config
+              start ecs
+              EOF
   network_interfaces {
     security_groups = [aws_security_group.ecs_sg.id]
   }
@@ -21,10 +26,10 @@ resource "aws_launch_template" "ecs_xtages_launch_template" {
 }
 
 resource "aws_autoscaling_group" "ecs_xtages_asg" {
-  name                 = "ecs-xtages-autoscaling"
-  vpc_zone_identifier  = var.private_subnet_ids
-  min_size             = 1
-  max_size             = 10
+  name                = "ecs-xtages-autoscaling"
+  vpc_zone_identifier = var.private_subnet_ids
+  min_size            = 1
+  max_size            = 10
 
   mixed_instances_policy {
 
@@ -32,7 +37,7 @@ resource "aws_autoscaling_group" "ecs_xtages_asg" {
       on_demand_base_capacity                  = 0
       on_demand_percentage_above_base_capacity = 0
       spot_allocation_strategy                 = "lowest-price"
-      spot_max_price = "0.0464"
+      spot_max_price                           = "0.0464"
     }
 
     launch_template {
@@ -41,23 +46,33 @@ resource "aws_autoscaling_group" "ecs_xtages_asg" {
       }
 
       override {
+        instance_type     = "m6g.large"
+        weighted_capacity = "1"
+      }
+
+      override {
+        instance_type     = "m5.large"
+        weighted_capacity = "1"
+      }
+
+      override {
         instance_type     = "t2.large"
-        weighted_capacity = "2"
+        weighted_capacity = "1"
       }
 
       override {
         instance_type     = "t3.large"
-        weighted_capacity = "2"
+        weighted_capacity = "1"
       }
 
       override {
         instance_type     = "t2.medium"
-        weighted_capacity = "2"
+        weighted_capacity = "1"
       }
 
       override {
         instance_type     = "t3.medium"
-        weighted_capacity = "2"
+        weighted_capacity = "1"
       }
     }
   }
@@ -72,12 +87,12 @@ resource "aws_autoscaling_group" "ecs_xtages_asg" {
 # Scale up alarm
 
 resource "aws_autoscaling_policy" "cpu_asg_policy" {
-  name = "CPU-ASG-Policy-Add"
+  name                   = "CPU-ASG-Policy-Add"
   autoscaling_group_name = aws_autoscaling_group.ecs_xtages_asg.name
-  adjustment_type = "ChangeInCapacity"
-  scaling_adjustment = "1"
-  cooldown = 300
-  policy_type = "SimpleScaling"
+  adjustment_type        = "ChangeInCapacity"
+  scaling_adjustment     = "1"
+  cooldown               = 300
+  policy_type            = "SimpleScaling"
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_above_80p_alarm" {
