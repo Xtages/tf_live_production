@@ -11,12 +11,7 @@ resource "aws_launch_template" "ecs_xtages_launch_template" {
   iam_instance_profile {
     arn = aws_iam_instance_profile.ecs_ec2_role.arn
   }
-  user_data = <<-EOF
-              #!/bin/bash
-              echo 'ECS_CLUSTER=xtages-cluster' > /etc/ecs/ecs.config
-              echo 'ECS_ENABLE_SPOT_INSTANCE_DRAINING=true' >> /etc/ecs/ecs.config
-              start ecs
-              EOF
+  user_data = base64encode(data.template_file.ecs_user_data.rendered)
   network_interfaces {
     security_groups = [aws_security_group.ecs_sg.id]
   }
