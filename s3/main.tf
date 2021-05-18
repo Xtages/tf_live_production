@@ -32,3 +32,9 @@ resource "aws_s3_bucket_object" "s3_buildspecs_node_cd" {
   content_base64 = base64encode( file("${path.root}/buildspec-def/cd/node/15.13.0-buildspec.yml") )
 }
 
+resource "aws_s3_bucket_object" "s3_dockerfile_node_cd" {
+  bucket = aws_s3_bucket.s3_xtages_buildspecs.id
+  key = "cd/node/Dockerfile"
+  content_base64 = base64encode( file("${path.root}/buildspec-def/cd/node/Dockerfile") )
+}
+
