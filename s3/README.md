@@ -6,3 +6,4 @@ To run these changes you will need to run terraform from this directory `tf_live
 
 Current definitions:
 - bucket with `buildspec.yml` definitions per stack and per operation
+- bucket with customers Terraform backend to deploy applications
