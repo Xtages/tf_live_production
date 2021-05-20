@@ -12,7 +12,7 @@ resource "aws_ecr_repository" "xtages_build_images_node_ci" {
   }
 
   tags = {
-    Terraform = true
+    Terraform   = true
     Environment = var.env
   }
 }
@@ -30,7 +30,7 @@ resource "aws_ecr_repository" "xtages_build_images_node_cd" {
   }
 
   tags = {
-    Terraform = true
+    Terraform   = true
     Environment = var.env
   }
 }
@@ -41,10 +41,10 @@ data "template_file" "codebuild_pull_policy" {
 
 resource "aws_ecr_repository_policy" "codebuild_pull_policy" {
   repository = aws_ecr_repository.xtages_build_images_node_ci.name
-  policy = data.template_file.codebuild_pull_policy.rendered
+  policy     = data.template_file.codebuild_pull_policy.rendered
 }
 
 resource "aws_ecr_repository_policy" "codebuild_pull_policy_cd" {
   repository = aws_ecr_repository.xtages_build_images_node_cd.name
-  policy = data.template_file.codebuild_pull_policy.rendered
+  policy     = data.template_file.codebuild_pull_policy.rendered
 }

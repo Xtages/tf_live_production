@@ -1,8 +1,14 @@
 version: 0.2
 
 phases:
+  pre_build:
+    commands:
+      - nohup /usr/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2 &
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 606626603369.dkr.ecr.us-east-1.amazonaws.com
   build:
     commands:
-      - git clone -q https://x-access-token:${XTAGES_GITHUB_TOKEN}@github.com/${XTAGES_REPO}.git src && cd src
-      - git reset --hard ${XTAGES_COMMIT}
-      - git log -1
+      - git clone -q https://x-access-token:${XTAGES_GITHUB_TOKEN}@github.com/${XTAGES_REPO}.git project_src && cd project_src
+      - git tag ${XTAGES_GH_PROJECT_TAG} && cd ..
+      - git clone -q https://x-access-token:${XTAGES_GITHUB_TOKEN}@github.com/${XTAGES_DEPLOY_REPO}.git deploy_src && cd deploy_src
+      - git tag ${XTAGES_GH_DEPLOY_TAG}
+      - sh ${XTAGES_PROJECT_TYPE}/deploy.sh
