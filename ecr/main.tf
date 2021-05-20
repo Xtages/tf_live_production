@@ -19,7 +19,7 @@ resource "aws_ecr_repository" "xtages_build_images_node_ci" {
 
 resource "aws_ecr_repository" "xtages_build_images_node_cd" {
   name                 = "xtages-build-images/node_cd"
-  image_tag_mutability = "IMMUTABLE"
+  image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
     scan_on_push = true
