@@ -30,7 +30,7 @@ resource "aws_ecr_repository" "xtages_build_images_node_cd" {
   }
 
   tags = {
-    Terraform = true
+    Terraform   = true
     Environment = var.env
   }
 }
