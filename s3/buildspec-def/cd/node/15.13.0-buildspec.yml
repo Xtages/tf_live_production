@@ -11,4 +11,4 @@ phases:
       - git checkout ${XTAGES_GH_PROJECT_TAG} && cd ..
       - git clone -q https://x-access-token:${XTAGES_GITHUB_TOKEN}@github.com/${XTAGES_DEPLOY_REPO}.git deploy_src && cd deploy_src
       - git checkout ${XTAGES_GH_DEPLOY_TAG}
-      - sh ${XTAGES_PROJECT_TYPE}/deploy.sh ${XTAGES_APP_ENV} "15.13.0" ${XTAGES_ORG}
+      - sh ${XTAGES_PROJECT_TYPE}/deploy.sh ${XTAGES_APP_ENV} ${XTAGES_NODE_VER} ${XTAGES_ORG} ${XTAGES_GH_DEPLOY_TAG}
