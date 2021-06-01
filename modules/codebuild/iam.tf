@@ -111,6 +111,13 @@ resource "aws_iam_role_policy" "xtages_codebuild_cd_policy" {
         "arn:aws:ecr:*:606626603369:repository/xtages-build-images",
         "arn:aws:s3:::xtages-buildspecs/*"
       ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ecr:GetAuthorizationToken"
+      ],
+      "Resource": "*"
     }
   ]
 }
