@@ -65,7 +65,8 @@ resource "aws_iam_role" "xtages_codebuild_cd_role" {
     {
       "Action": "sts:AssumeRole",
       "Principal": {
-        "Service": "codebuild.amazonaws.com"
+        "Service": "codebuild.amazonaws.com",
+        "AWS": "arn:aws:iam::606626603369:user/terraform"
       },
       "Effect": "Allow"
     }
@@ -75,51 +76,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "xtages_codebuild_cd_policy" {
-  name   = "xtages-codebuild-cd-role-policy"
-  role   = aws_iam_role.xtages_codebuild_cd_role.id
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ecr:StartImageScan",
-        "ecr:PutImageScanningConfiguration",
-        "ecr:InitiateLayerUpload",
-        "ecr:PutImage",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents"
-      ],
-      "Resource": [
-        "arn:aws:ecr:*:606626603369:repository/*",
-        "arn:aws:logs:*:606626603369:log-group:*"
-      ],
-      "Condition": {
-        "StringEquals": {
-          "aws:ResourceTag/organization": "$${aws:ResourceTag/organization}"
-        }
-      }
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:GetObject",
-        "ecr:BatchGetImage"
-      ],
-      "Resource": [
-        "arn:aws:ecr:*:606626603369:repository/xtages-build-images",
-        "arn:aws:s3:::xtages-buildspecs/*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ecr:GetAuthorizationToken"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-EOF
+  name = "xtages-codebuild-cd-role-policy"
+  role = aws_iam_role.xtages_codebuild_cd_role.id
+  policy = templatefile("${path.module}/policies/xtages-codebuild-cd-role-policy.json",{})
 }
