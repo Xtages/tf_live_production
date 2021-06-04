@@ -92,9 +92,18 @@ EOF
 
 }
 
-resource "aws_iam_policy_attachment" "ecs_service_attach1" {
-  name       = "ecs_service_attach1"
-  roles      = [aws_iam_role.ecs_service_role.name]
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole"
+variable "iam_policy_arn_for_ecs_service" {
+  description = "IAM policies to attach to ECS service role"
+  default = [
+    "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole",
+    "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole"
+  ]
+  type = list(string)
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_service_attach" {
+  role       = aws_iam_role.ecs_service_role.name
+  count      = length(var.iam_policy_arn_for_ecs_service)
+  policy_arn = var.iam_policy_arn_for_ecs_service[count.index]
 }
 
