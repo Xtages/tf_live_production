@@ -66,7 +66,6 @@ resource "aws_iam_role" "xtages_codebuild_cd_role" {
       "Action": "sts:AssumeRole",
       "Principal": {
         "Service": "codebuild.amazonaws.com",
-        "AWS": "arn:aws:iam::606626603369:user/terraform"
       },
       "Effect": "Allow"
     }
