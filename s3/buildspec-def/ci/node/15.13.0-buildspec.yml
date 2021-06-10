@@ -7,4 +7,4 @@ phases:
       - git reset --hard ${XTAGES_COMMIT} && cd ...
       - git clone -q https://x-access-token:${XTAGES_GITHUB_TOKEN}@github.com/${XTAGES_RECIPE_REPO}.git build_src && cd build_src
       - git checkout -q ${XTAGES_GH_RECIPE_TAG}
-      - sh ${PROJECT_TYPE}/ci/build.sh
+      - sh ${XTAGES_SCRIPT}
