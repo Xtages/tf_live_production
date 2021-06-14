@@ -71,9 +71,11 @@
         "ecr:DescribeRepositories",
         "ecr:ListTagsForResource",
         "ecs:CreateService",
+        "ecs:DeregisterTaskDefinition",
         "ecs:DescribeServices",
         "ecs:DescribeTaskDefinition",
         "ecs:RegisterTaskDefinition",
+        "ecs:UpdateService",
         "elasticloadbalancing:AddTags",
         "elasticloadbalancing:CreateListener",
         "elasticloadbalancing:CreateRule",
@@ -100,11 +102,27 @@
     {
       "Effect": "Allow",
       "Action": "iam:PassRole",
-      "Resource": "arn:aws:iam::606626603369:role/ecs_service_role",
+      "Resource": [
+        "arn:aws:iam::606626603369:role/ecs_service_role"
+      ],
       "Condition": {
         "StringEquals": {
           "iam:PassedToService": [
             "ecs.amazonaws.com"
+          ]
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "iam:PassRole",
+      "Resource": [
+        "arn:aws:iam::606626603369:role/apps-task-role"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "iam:PassedToService": [
+            "ecs-tasks.amazonaws.com"
           ]
         }
       }
