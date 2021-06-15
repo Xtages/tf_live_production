@@ -42,11 +42,6 @@ resource "aws_autoscaling_group" "ecs_xtages_asg" {
       }
 
       override {
-        instance_type     = "m6g.large"
-        weighted_capacity = "1"
-      }
-
-      override {
         instance_type     = "m5.large"
         weighted_capacity = "1"
       }
