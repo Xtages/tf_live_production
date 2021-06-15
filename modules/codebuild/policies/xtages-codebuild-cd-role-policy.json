@@ -4,6 +4,7 @@
     {
       "Effect": "Allow",
       "Action": [
+        "ecr:BatchGetImage",
         "ecr:StartImageScan",
         "ecr:PutImageScanningConfiguration",
         "ecr:InitiateLayerUpload",
