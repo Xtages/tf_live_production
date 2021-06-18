@@ -4,7 +4,7 @@ resource "aws_ecs_cluster" "xtages_cluster" {
 
   setting {
     name = "containerInsights"
-    value = "disabled"
+    value = "enabled"
   }
 }
 
