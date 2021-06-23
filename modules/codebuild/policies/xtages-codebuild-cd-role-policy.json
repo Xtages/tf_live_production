@@ -40,6 +40,20 @@
     {
       "Effect": "Allow",
       "Action": [
+        "ssm:GetParameters"
+      ],
+      "Resource": [
+        "arn:aws:ssm:*:606626603369:parameter*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "aws:ResourceTag/organization": "$${aws:ResourceTag/organization}"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
         "ecr:BatchGetImage",
         "ecr:GetDownloadUrlForLayer",
         "s3:ListBucket"
