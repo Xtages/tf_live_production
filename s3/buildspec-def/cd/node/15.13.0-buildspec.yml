@@ -1,5 +1,8 @@
 version: 0.2
 
+env:
+  parameter-store:
+    XTAGES_RECIPE_GIT_TOKEN: /codebuild/matias/token
 phases:
   pre_build:
     commands:
@@ -9,6 +12,6 @@ phases:
     commands:
       - git clone -q https://x-access-token:${XTAGES_GITHUB_TOKEN}@github.com/${XTAGES_REPO}.git project_src && cd project_src
       - git checkout -q ${XTAGES_GH_PROJECT_TAG} && cd ..
-      - git clone -q https://x-access-token:${XTAGES_GITHUB_TOKEN}@github.com/${XTAGES_RECIPE_REPO}.git deploy_src && cd deploy_src
+      - git clone -q https://x-access-token:${XTAGES_RECIPE_GIT_TOKEN}@github.com/${XTAGES_RECIPE_REPO}.git deploy_src && cd deploy_src
       - git checkout -q ${XTAGES_GH_RECIPE_TAG}
       - sh -x ${XTAGES_SCRIPT}

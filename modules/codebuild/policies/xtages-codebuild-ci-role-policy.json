@@ -33,6 +33,15 @@
     {
       "Effect": "Allow",
       "Action": [
+        "ssm:GetParameters"
+      ],
+      "Resource": [
+        "arn:aws:ssm:*:606626603369:parameter/codebuild/matias/token"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
         "s3:GetObject",
         "ecr:BatchGetImage"
       ],
