@@ -10,9 +10,9 @@ resource "aws_cognito_user_pool" "user_pool" {
 
   admin_create_user_config {
     invite_message_template {
-      email_message = "Your username is {username} and temporary password is {####}."
+      email_message = "Your username is {username} and temporary password is {####}"
       email_subject = "Your temporary password"
-      sms_message   = "Your username is {username} and temporary password is {####}."
+      sms_message   = "Your username is {username} and temporary password is {####}"
     }
   }
 
@@ -31,7 +31,7 @@ resource "aws_cognito_user_pool" "user_pool" {
     source_arn            = var.no_reply_at_xtages_dot_com_arn
   }
 
-  email_verification_message = "Your verification code is {####}."
+  email_verification_message = "Your verification code is {####}"
   email_verification_subject = "Your verification code"
 
   mfa_configuration = "OPTIONAL"

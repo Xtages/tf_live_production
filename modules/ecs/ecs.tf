@@ -6,6 +6,23 @@ resource "aws_ecs_cluster" "xtages_cluster" {
     name = "containerInsights"
     value = "enabled"
   }
+
+  capacity_providers = [
+    aws_ecs_capacity_provider.xtages_capacity_provider.name
+  ]
+
+  default_capacity_provider_strategy {
+    capacity_provider = aws_ecs_capacity_provider.xtages_capacity_provider.name
+    weight = 1
+    base = 0
+  }
+
+  tags = {
+    Environment = var.env
+    Organization = "Xtages"
+    Terraform = true
+  }
+
 }
 
 resource "aws_launch_template" "ecs_xtages_launch_template" {
@@ -31,10 +48,11 @@ resource "aws_launch_template" "ecs_xtages_launch_template" {
 }
 
 resource "aws_autoscaling_group" "ecs_xtages_asg" {
-  name                = "ecs-xtages-autoscaling"
+  name_prefix                = "ecs-xtages-autoscaling"
   vpc_zone_identifier = var.private_subnet_ids
   min_size            = 1
   max_size            = 10
+  protect_from_scale_in = true
 
   mixed_instances_policy {
 
@@ -96,62 +114,23 @@ resource "aws_autoscaling_group" "ecs_xtages_asg" {
   ]
 }
 
-# Scale up alarm
+resource "aws_ecs_capacity_provider" "xtages_capacity_provider" {
+  name = "xtages_capacity"
 
-resource "aws_autoscaling_policy" "cpu_asg_policy" {
-  name                   = "CPU-ASG-Policy-Add"
-  autoscaling_group_name = aws_autoscaling_group.ecs_xtages_asg.name
-  adjustment_type        = "ChangeInCapacity"
-  scaling_adjustment     = "1"
-  cooldown               = 300
-  policy_type            = "SimpleScaling"
-}
+  auto_scaling_group_provider {
+    auto_scaling_group_arn         = aws_autoscaling_group.ecs_xtages_asg.arn
+    managed_termination_protection = "ENABLED"
 
-resource "aws_cloudwatch_metric_alarm" "cpu_above_80p_alarm" {
-  alarm_name          = "CPU-above-80p"
-  alarm_description   = "CPU above 80%"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "2"
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/EC2"
-  period              = "120"
-  statistic           = "Average"
-  threshold           = "80"
-
-  dimensions = {
-    "AutoScalingGroupName" = aws_autoscaling_group.ecs_xtages_asg.name
+    managed_scaling {
+      maximum_scaling_step_size = 2
+      minimum_scaling_step_size = 2
+      status                    = "ENABLED"
+      target_capacity           = 100
+    }
   }
-
-  actions_enabled = true
-  alarm_actions   = [aws_autoscaling_policy.cpu_asg_policy.arn]
-}
-
-# Scale down alarm
-
-resource "aws_autoscaling_policy" "cpu_asg_policy_scaledown" {
-  name                   = "CPU-ASG-Policy-scaledown"
-  autoscaling_group_name = aws_autoscaling_group.ecs_xtages_asg.name
-  adjustment_type        = "ChangeInCapacity"
-  scaling_adjustment     = "-1"
-  cooldown               = "300"
-  policy_type            = "SimpleScaling"
-}
-
-resource "aws_cloudwatch_metric_alarm" "cpu_below_5p_alarm" {
-  alarm_name          = "CPU-below-5p"
-  alarm_description   = "CPU below 5%"
-  comparison_operator = "LessThanOrEqualToThreshold"
-  evaluation_periods  = "2"
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/EC2"
-  period              = "120"
-  statistic           = "Average"
-  threshold           = "5"
-
-  dimensions = {
-    "AutoScalingGroupName" = aws_autoscaling_group.ecs_xtages_asg.arn
+  tags = {
+    Name = "ECS Cluster"
+    Organization = "Xtages"
+    Terraform = true
   }
-
-  actions_enabled = true
-  alarm_actions   = [aws_autoscaling_policy.cpu_asg_policy_scaledown.arn]
 }
