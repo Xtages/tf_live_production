@@ -40,6 +40,20 @@
     {
       "Effect": "Allow",
       "Action": [
+        "ecs:DeleteService"
+      ],
+      "Resource": [
+        "arn:aws:ecs:*:606626603369:service/*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "aws:ResourceTag/organization": "$${aws:ResourceTag/organization}"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
         "ssm:GetParameters"
       ],
       "Resource": [
