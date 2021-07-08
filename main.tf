@@ -11,16 +11,6 @@ module "jumphost" {
   public_subnets = module.main_vpc.public_subnets
 }
 
-module "ecs" {
-  cluster_name = "xtages-cluster"
-  source = "./modules/ecs"
-  env = var.env
-  aws_region = var.aws_region
-  vpc_id = module.main_vpc.vpc_id
-  private_subnet_ids = module.main_vpc.private_subnets
-  public_subnet_ids = module.main_vpc.public_subnets
-}
-
 module "db" {
   source = "./modules/db"
   env = var.env
