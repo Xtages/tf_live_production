@@ -8,7 +8,7 @@ data "terraform_remote_state" "xtages_infra" {
 }
 
 module "lb_console" {
-  source            = "git::https://github.com/Xtages/tf_lbs.git?ref=sg_output"
+  source            = "git::https://github.com/Xtages/tf_lbs.git?ref=v0.1.1"
   alb_name          = "console-lb-${var.env}"
   env               = var.env
   aws_region        = var.aws_region
@@ -19,7 +19,7 @@ module "lb_console" {
 }
 
 module "lb_customers" {
-  source            = "git::https://github.com/Xtages/tf_lbs.git?ref=sg_output"
+  source            = "git::https://github.com/Xtages/tf_lbs.git?ref=v0.1.1"
   alb_name          = "customers-lb-${var.env}"
   env               = var.env
   aws_region        = var.aws_region

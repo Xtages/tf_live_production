@@ -17,7 +17,7 @@ data "terraform_remote_state" "xtages_lb_infra" {
 }
 
 module "ecs" {
-  source             = "git::https://github.com/Xtages/tf_ecs.git?ref=remove_sgs"
+  source             = "git::https://github.com/Xtages/tf_ecs.git?ref=v0.1.3"
   cluster_name       = "xtages-customer-staging"
   env                = var.env
   aws_region         = var.aws_region
