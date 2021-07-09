@@ -18,11 +18,12 @@ data "terraform_remote_state" "xtages_lb_infra" {
 
 module "ecs" {
   source             = "git::https://github.com/Xtages/tf_ecs.git?ref=v0.1.3"
-  cluster_name       = "xtages-cluster-${var.env}"
+  cluster_name       = "xtages-customer-staging"
   env                = var.env
   aws_region         = var.aws_region
   vpc_id             = data.terraform_remote_state.xtages_infra.outputs.vpc_id
   private_subnet_ids = data.terraform_remote_state.xtages_infra.outputs.private_subnets
   public_subnet_ids  = data.terraform_remote_state.xtages_infra.outputs.public_subnets
-  ecs_sg_id          = data.terraform_remote_state.xtages_lb_infra.outputs.xtages_ecs_sg_id
+  ecs_sg_id          = data.terraform_remote_state.xtages_lb_infra.outputs.customers_ecs_sg_id
+  asg_min_size       = 0
 }

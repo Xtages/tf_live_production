@@ -1,4 +1,3 @@
-# ECS outputs
 output "xtages_ecs_cluster_id" {
   value = module.ecs.xtages_ecs_cluster_id
 }
