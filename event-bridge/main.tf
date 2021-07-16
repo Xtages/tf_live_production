@@ -1,3 +1,7 @@
+locals {
+  staging_cluster_name = split("/", data.terraform_remote_state.ecs_customer_staging.outputs.xtages_ecs_cluster_id)[1]
+}
+
 # Event name can be seen here
 # https://docs.aws.amazon.com/AmazonECS/latest/userguide/ecs_cwe_events.html
 
@@ -11,15 +15,30 @@ resource "aws_cloudwatch_event_rule" "ecs_scalein_staging" {
     "aws.ecs"
   ],
   "detail-type": [
-    "ECS Service Action"
+    "AWS API Call via CloudTrail"
   ],
   "detail": {
-    "clusterArn": [
-      "${data.terraform_remote_state.ecs_customer_staging.outputs.xtages_ecs_cluster_id}"
+    "userIdentity": {
+      "sessionContext": {
+        "sessionIssuer": {
+          "userName": [
+            "AWSServiceRoleForApplicationAutoScaling_ECSService"
+          ]
+        }
+      }
+    },
+    "eventSource": [
+      "ecs.amazonaws.com"
     ],
     "eventName": [
-      "SERVICE_STEADY_STATE"
-    ]
+      "UpdateService"
+    ],
+    "requestParameters": {
+      "cluster": [
+        "${local.staging_cluster_name}"
+      ],
+      "desiredCount": [0]
+    }
   }
 }
 EOF
