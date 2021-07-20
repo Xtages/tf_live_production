@@ -40,20 +40,6 @@
     {
       "Effect": "Allow",
       "Action": [
-        "ecs:DeleteService"
-      ],
-      "Resource": [
-        "arn:aws:ecs:*:606626603369:service/*"
-      ],
-      "Condition": {
-        "StringEquals": {
-          "aws:ResourceTag/organization": "$${aws:ResourceTag/organization}"
-        }
-      }
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
         "ssm:GetParameters"
       ],
       "Resource": [
@@ -106,6 +92,7 @@
         "acm:DescribeCertificate",
         "acm:ListCertificates",
         "acm:ListTagsForCertificate",
+        "application-autoscaling:*",
         "ecr:DescribeRepositories",
         "ecr:ListTagsForResource",
         "ecs:CreateService",
@@ -146,7 +133,7 @@
       "Effect": "Allow",
       "Action": "iam:PassRole",
       "Resource": [
-        "arn:aws:iam::606626603369:role/ecs_service_role"
+        "arn:aws:iam::606626603369:role/ecs_service_role*"
       ],
       "Condition": {
         "StringEquals": {
@@ -160,7 +147,7 @@
       "Effect": "Allow",
       "Action": "iam:PassRole",
       "Resource": [
-        "arn:aws:iam::606626603369:role/apps-task-role"
+        "arn:aws:iam::606626603369:role/apps-task-role*"
       ],
       "Condition": {
         "StringEquals": {
