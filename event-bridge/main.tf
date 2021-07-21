@@ -75,3 +75,35 @@ resource "aws_cloudwatch_event_target" "sns_deploy_completed" {
   rule      = aws_cloudwatch_event_rule.ecs_deployment_completed.name
   arn       = data.terraform_remote_state.xtages_sns_sqs.outputs.sns_deployment_completed
 }
+
+resource "aws_cloudwatch_event_rule" "ecs_cloudtrail_redeploy" {
+  name        = "ecs-redeployment-started"
+  description = "Notifies to Console when a redeployment is started"
+
+  event_pattern = <<EOF
+{
+  "source": [
+    "aws.ecs"
+  ],
+  "detail-type": [
+    "AWS API Call via CloudTrail"
+  ],
+  "detail": {
+    "eventSource": [
+      "ecs.amazonaws.com"
+    ],
+    "eventName": [
+      "UpdateService"
+    ],
+    "requestParameters": {
+      "desiredCount": [1]
+    }
+  }
+}
+EOF
+}
+
+resource "aws_cloudwatch_event_target" "sns_redeploy_started" {
+  rule      = aws_cloudwatch_event_rule.ecs_cloudtrail_redeploy.name
+  arn       = data.terraform_remote_state.xtages_sns_sqs.outputs.sns_deployment_completed
+}
