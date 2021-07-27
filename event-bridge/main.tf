@@ -1,5 +1,6 @@
 locals {
   staging_cluster_name = split("/", data.terraform_remote_state.ecs_customer_staging.outputs.xtages_ecs_cluster_id)[1]
+  production_cluster_name = split("/", data.terraform_remote_state.ecs_customer_production.outputs.xtages_ecs_cluster_id)[1]
 }
 
 # Event name can be seen here
@@ -49,10 +50,10 @@ resource "aws_cloudwatch_event_target" "sns_scale_in_staging" {
   arn       = data.terraform_remote_state.xtages_sns_sqs.outputs.sns_scaling_staging
 }
 
-# notification for deployment completed\
-resource "aws_cloudwatch_event_rule" "ecs_deployment_completed" {
-  name        = "ecs-deployment-completed"
-  description = "Notifies Console when a deployment was completed successfully"
+# notification for steady state
+resource "aws_cloudwatch_event_rule" "ecs_steady_state" {
+  name        = "ecs-steady-state"
+  description = "Notifies Console an ECS service has reached a steady state"
 
   event_pattern = <<EOF
 {
@@ -60,20 +61,24 @@ resource "aws_cloudwatch_event_rule" "ecs_deployment_completed" {
     "aws.ecs"
   ],
   "detail-type": [
-    "ECS Deployment State Change"
+    "ECS Service Action"
   ],
   "detail": {
     "eventName": [
-      "SERVICE_DEPLOYMENT_COMPLETED"
+      "SERVICE_STEADY_STATE"
+    ],
+    "clusterArn": [
+      "${data.terraform_remote_state.ecs_customer_staging.outputs.xtages_ecs_cluster_id}",
+      "${data.terraform_remote_state.ecs_customer_production.outputs.xtages_ecs_cluster_id}"
     ]
   }
 }
 EOF
 }
 
-resource "aws_cloudwatch_event_target" "sns_deploy_completed" {
-  rule      = aws_cloudwatch_event_rule.ecs_deployment_completed.name
-  arn       = data.terraform_remote_state.xtages_sns_sqs.outputs.sns_deployment_completed
+resource "aws_cloudwatch_event_target" "sns_ecs_steady_state" {
+  rule      = aws_cloudwatch_event_rule.ecs_steady_state.name
+  arn       = data.terraform_remote_state.xtages_sns_sqs.outputs.sns_ecs_steady_state
 }
 
 resource "aws_cloudwatch_event_rule" "ecs_cloudtrail_redeploy" {
@@ -96,7 +101,13 @@ resource "aws_cloudwatch_event_rule" "ecs_cloudtrail_redeploy" {
       "UpdateService"
     ],
     "requestParameters": {
-      "desiredCount": [1]
+      "cluster": [
+        "${local.staging_cluster_name}",
+        "${local.production_cluster_name}"
+      ],
+      "desiredCount": [
+        { "anything-but":[-1] }
+      ]
     }
   }
 }
@@ -105,5 +116,41 @@ EOF
 
 resource "aws_cloudwatch_event_target" "sns_redeploy_started" {
   rule      = aws_cloudwatch_event_rule.ecs_cloudtrail_redeploy.name
+  arn       = data.terraform_remote_state.xtages_sns_sqs.outputs.sns_deployment_completed
+}
+
+resource "aws_cloudwatch_event_rule" "ecs_cloudtrail_deploy" {
+  name        = "ecs-deploy-started"
+  description = "Notifies to Console when a 1st deployment is started"
+
+  event_pattern = <<EOF
+{
+  "source": [
+    "aws.ecs"
+  ],
+  "detail-type": [
+    "AWS API Call via CloudTrail"
+  ],
+  "detail": {
+    "eventSource": [
+      "ecs.amazonaws.com"
+    ],
+    "eventName": [
+      "CreateService"
+    ],
+    "requestParameters": {
+      "cluster": [
+        "${data.terraform_remote_state.ecs_customer_staging.outputs.xtages_ecs_cluster_id}",
+        "${data.terraform_remote_state.ecs_customer_production.outputs.xtages_ecs_cluster_id}"
+      ],
+      "desiredCount": [1]
+    }
+  }
+}
+EOF
+}
+
+resource "aws_cloudwatch_event_target" "sns_deploy_started" {
+  rule      = aws_cloudwatch_event_rule.ecs_cloudtrail_deploy.name
   arn       = data.terraform_remote_state.xtages_sns_sqs.outputs.sns_deployment_completed
 }
