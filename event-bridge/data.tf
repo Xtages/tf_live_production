@@ -16,3 +16,11 @@ data "terraform_remote_state" "ecs_customer_staging" {
   }
 }
 
+data "terraform_remote_state" "ecs_customer_production" {
+  backend = "s3"
+  config = {
+    bucket = "xtages-tfstate"
+    key    = "tfstate/us-east-1/production/ecs/production/customers"
+    region = "us-east-1"
+  }
+}
