@@ -3,9 +3,6 @@ resource "aws_sqs_queue" "scalein_staging_deadletter_queue" {
   receive_wait_time_seconds = 20
   message_retention_seconds = 1209600 # 14 days
 
-//  kms_master_key_id = "alias/aws/sqs"
-//  kms_data_key_reuse_period_seconds = 300
-
   tags = local.tags
 }
 
@@ -16,9 +13,6 @@ resource "aws_sqs_queue" "scaling_staging_queue" {
     deadLetterTargetArn = aws_sqs_queue.scalein_staging_deadletter_queue.arn
     maxReceiveCount     = 4
   })
-
-//  kms_master_key_id = "alias/aws/sqs"
-//  kms_data_key_reuse_period_seconds = 300
 
   tags = local.tags
 }
@@ -52,9 +46,6 @@ resource "aws_sqs_queue" "ecs_steady_state_deadletter_queue" {
   receive_wait_time_seconds = 20
   message_retention_seconds = 1209600 # 14 days
 
-//  kms_master_key_id = "alias/aws/sqs"
-//  kms_data_key_reuse_period_seconds = 300
-
   tags = local.tags
 }
 
@@ -62,9 +53,6 @@ resource "aws_sqs_queue" "deployment_updates_deadletter_queue" {
   name                      = "deployment-updates-deadletter-queue"
   receive_wait_time_seconds = 20
   message_retention_seconds = 1209600 # 14 days
-
-//  kms_master_key_id = "alias/aws/sqs"
-//  kms_data_key_reuse_period_seconds = 300
 
   tags = local.tags
 }
@@ -76,9 +64,6 @@ resource "aws_sqs_queue" "deployment_updates_queue" {
     deadLetterTargetArn = aws_sqs_queue.deployment_updates_deadletter_queue.arn
     maxReceiveCount     = 4
   })
-
-//  kms_master_key_id = "alias/aws/sqs"
-//  kms_data_key_reuse_period_seconds = 300
 
   tags = local.tags
 }
@@ -114,9 +99,6 @@ resource "aws_sqs_queue" "ecs_steady_state_queue" {
     deadLetterTargetArn = aws_sqs_queue.ecs_steady_state_deadletter_queue.arn
     maxReceiveCount     = 4
   })
-
-//  kms_master_key_id = "alias/aws/sqs"
-//  kms_data_key_reuse_period_seconds = 300
 
   tags = local.tags
 }
