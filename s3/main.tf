@@ -23,6 +23,16 @@ resource "aws_s3_bucket" "s3_xtages_buildspecs" {
   }
 }
 
+resource "aws_s3_bucket" "s3_xtages_cdn" {
+  bucket = "xtages-cdn"
+  acl    = "private"
+  tags   = local.tags
+
+  versioning {
+    enabled = false
+  }
+}
+
 resource "aws_s3_bucket_object" "s3_buildspecs_node_ci" {
   bucket         = aws_s3_bucket.s3_xtages_buildspecs.id
   key            = "ci/node/15.13.0-buildspec.yml"
