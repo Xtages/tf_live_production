@@ -1,11 +1,11 @@
 module "main_vpc" {
-  source     = "./modules/vpc"
+  source     = "git::https://github.com/Xtages/tf_vpc.git?ref=v0.1.0"
   env        = var.env
   aws_region = var.aws_region
 }
 
 module "jumphost" {
-  source         = "./modules/jumphost"
+  source         = "git::https://github.com/Xtages/tf_jumphost.git?ref=v0.1.0"
   env            = var.env
   vpc_id         = module.main_vpc.vpc_id
   public_subnets = module.main_vpc.public_subnets
@@ -48,6 +48,7 @@ module "ses" {
 }
 
 module "codebuild" {
-  source = "./modules/codebuild"
-  env = var.env
+  source     = "git::https://github.com/Xtages/tf_codebuild.git?ref=v0.1.2"
+  env        = var.env
+  account_id = var.account_id
 }
