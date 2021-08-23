@@ -17,7 +17,7 @@ data "terraform_remote_state" "xtages_lb_infra" {
 }
 
 module "ecs" {
-  source             = "git::https://github.com/Xtages/tf_ecs.git?ref=v0.1.4"
+  source             = "git::https://github.com/Xtages/tf_ecs.git?ref=v0.1.5"
   cluster_name       = "xtages-cluster-${var.env}"
   env                = var.env
   aws_region         = var.aws_region
@@ -25,4 +25,36 @@ module "ecs" {
   private_subnet_ids = data.terraform_remote_state.xtages_infra.outputs.private_subnets
   public_subnet_ids  = data.terraform_remote_state.xtages_infra.outputs.public_subnets
   ecs_sg_id          = data.terraform_remote_state.xtages_lb_infra.outputs.xtages_ecs_sg_id
+  asg_max_size       = 10
+
+  asg_instance_distribution = {
+    on_demand_base_capacity                  = 0
+    on_demand_percentage_above_base_capacity = 0
+    spot_allocation_strategy                 = "lowest-price"
+    spot_instance_pools                      = 2
+    spot_max_price                           = "0.0464"
+  }
+
+  asg_launch_template_override = [
+    {
+      instance_type     = "m5.large",
+      weighted_capacity = "1"
+    },
+    {
+      instance_type     = "t2.large",
+      weighted_capacity = "1"
+    },
+    {
+      instance_type     = "t3.large",
+      weighted_capacity = "1"
+    },
+    {
+      instance_type     = "t2.medium",
+      weighted_capacity = "1"
+    },
+    {
+      instance_type     = "t3.medium",
+      weighted_capacity = "1"
+    }
+  ]
 }
