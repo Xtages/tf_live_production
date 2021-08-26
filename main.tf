@@ -37,16 +37,6 @@ module "db_dev" {
   db_instance_class = "db.t3.micro"
 }
 
-module "cognito" {
-  source = "./modules/cognito"
-  no_reply_at_xtages_dot_com_arn = module.ses.no_reply_at_xtages_dot_com_arn
-  env = var.env
-}
-
-module "ses" {
-  source = "./modules/ses"
-}
-
 module "codebuild" {
   source     = "git::https://github.com/Xtages/tf_codebuild.git?ref=v0.1.3"
   env        = var.env
