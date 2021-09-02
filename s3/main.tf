@@ -62,3 +62,21 @@ resource "aws_s3_bucket" "s3_xtages_tf_remote_customers" {
     }
   }
 }
+
+resource "aws_s3_bucket" "xtages_infra_logs" {
+  bucket = "xtages-infra-logs-${var.env}"
+  acl    = "private"
+  tags   = local.tags
+
+  versioning {
+    enabled = false
+  }
+
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "aws:kms"
+      }
+    }
+  }
+}
