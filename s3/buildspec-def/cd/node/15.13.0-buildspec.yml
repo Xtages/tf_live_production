@@ -14,4 +14,4 @@ phases:
       - git checkout -q ${XTAGES_GH_PROJECT_TAG} && cd ..
       - git clone -q https://x-access-token:${XTAGES_RECIPE_GIT_TOKEN}@github.com/${XTAGES_RECIPE_REPO}.git deploy_src && cd deploy_src
       - git checkout -q ${XTAGES_GH_RECIPE_TAG}
-      - sh -x ${XTAGES_SCRIPT}
+      - sh ${XTAGES_SCRIPT}
