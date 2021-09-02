@@ -33,28 +33,28 @@ module "ecs" {
     on_demand_percentage_above_base_capacity = 0
     spot_allocation_strategy                 = "lowest-price"
     spot_instance_pools                      = 2
-    spot_max_price                           = "0.0464"
+    spot_max_price                           = ""
   }
 
   asg_launch_template_override = [
     {
-      instance_type     = "m5.large",
+      // $0.1428
+      instance_type     = "m6i.2xlarge",
       weighted_capacity = "1"
     },
     {
-      instance_type     = "t2.large",
+      // $0.1729 hour
+      instance_type     = "m5a.2xlarge",
       weighted_capacity = "1"
     },
     {
-      instance_type     = "t3.large",
+      // $0.1764 hour
+      instance_type     = "c5.2xlarge",
       weighted_capacity = "1"
     },
     {
-      instance_type     = "t2.medium",
-      weighted_capacity = "1"
-    },
-    {
-      instance_type     = "t3.medium",
+      // $0.1638
+      instance_type     = "m5.2xlarge",
       weighted_capacity = "1"
     }
   ]
