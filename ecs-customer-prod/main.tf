@@ -30,7 +30,7 @@ module "ecs" {
 
   asg_instance_distribution = {
     on_demand_base_capacity                  = 0
-    on_demand_percentage_above_base_capacity = 100
+    on_demand_percentage_above_base_capacity = 0
     spot_allocation_strategy                 = "lowest-price"
     spot_instance_pools                      = 2
     spot_max_price                           = ""
