@@ -38,23 +38,23 @@ module "ecs" {
 
   asg_launch_template_override = [
     {
-      // $0.384
-      instance_type     = "m6i.2xlarge",
+      // $0.0714
+      instance_type     = "m6i.xlarge"
       weighted_capacity = "1"
     },
     {
-      // $0.344 hour
-      instance_type     = "m5a.2xlarge",
+      // $0.0737 hour
+      instance_type     = "m5a.xlarge",
       weighted_capacity = "1"
     },
     {
-      // $0.34 hour
-      instance_type     = "c5.2xlarge",
+      // $0.0668 hour
+      instance_type     = "c5.xlarge",
       weighted_capacity = "1"
     },
     {
-      // $0.384
-      instance_type     = "m5.2xlarge",
+      // $0.0718
+      instance_type     = "m5.xlarge",
       weighted_capacity = "1"
     }
   ]
