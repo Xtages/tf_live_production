@@ -102,12 +102,12 @@ resource "aws_cloudwatch_event_rule" "ecs_cloudtrail_redeploy" {
     ],
     "requestParameters": {
       "cluster": [
-        "${local.staging_cluster_name}",
-        "${local.production_cluster_name}"
+        "${data.terraform_remote_state.ecs_customer_staging.outputs.xtages_ecs_cluster_id}",
+        "${data.terraform_remote_state.ecs_customer_production.outputs.xtages_ecs_cluster_id}"
       ],
-      "desiredCount": [
-        { "anything-but":[-1] }
-      ]
+      "taskDefinition": [{
+        "exists": true
+      }]
     }
   }
 }
