@@ -26,7 +26,7 @@ module "ecs" {
   public_subnet_ids  = data.terraform_remote_state.xtages_infra.outputs.public_subnets
   ecs_sg_id          = data.terraform_remote_state.xtages_lb_infra.outputs.customers_ecs_sg_id
   asg_min_size       = 0
-  asg_max_size       = 10
+  asg_max_size       = 20
 
   asg_instance_distribution = {
     on_demand_base_capacity                  = 0
