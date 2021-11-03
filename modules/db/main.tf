@@ -5,7 +5,7 @@ module "db" {
   identifier = "xtages-${var.env}"
 
   engine            = "postgres"
-  engine_version    = "13.2"
+  engine_version    = "13.3"
   instance_class    = var.db_instance_class
   storage_encrypted = true
   allocated_storage = var.storage
